@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smu.recognize.dao.ApplyMapper">
+    <!--mybatis的mapper文件中，数据类型必须大写-->
+    <resultMap id="BaseResultMap" type="com.smu.recognize.model.Apply">
+        <id column="app_id" jdbcType="INTEGER" property="app_id" />
+        <result column="user_id" jdbcType="INTEGER" property="user_id" />
+        <result column="a_type" jdbcType="VARCHAR" property="a_type" />
+        <result column="a_reason" jdbcType="VARCHAR" property="a_reason"/>
+        <result column="a_date" jdbcType="VARCHAR" property="a_date"/>
+        <result column="a_startdate" jdbcType="VARCHAR" property="a_startdate"/>
+        <result column="a_enddate" jdbcType="VARCHAR" property="a_enddate"/>
+        <result column="a_leavetype" jdbcType="VARCHAR" property="a_leavetype"/>
+        <result column="a_startaddress" jdbcType="VARCHAR" property="a_startaddress"/>
+        <result column="a_leaveaddress" jdbcType="VARCHAR" property="a_leaveaddress"/>
+        <result column="a_status" jdbcType="INTEGER" property="a_status"/>
+        <result column="a_hours" jdbcType="INTEGER" property="a_hours"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <!--根据状态查询记录-->
+    <select id="findApplyByStatus" resultType="com.smu.recognize.model.Apply">
+        select * from apply_table
+        where a_status =#{a_status}
+    </select>
+
+    <!--根据用户id查询记录-->
+    <select id="findApplyByUse_id" resultType="com.smu.recognize.model.Apply">
+        select * from apply_table
+        where user_id =#{user_id}
+    </select>
+
+    <!--插入申请记录-->
+    <insert id="insertApply" parameterType="com.smu.recognize.model.Apply">
+        insert into apply_table(app_id,user_id,a_type,a_reason,a_date,a_startdate,a_enddate,a_leavetype,a_startaddress,a_leaveaddress,a_status,a_hours,Approvedby,ApprovedbyId,name)
+        values (#{app_id},#{user_id},#{a_type},#{a_reason},#{a_date},#{a_startDate},#{a_endDate},#{a_leaveType},#{a_startAddress},#{a_leaveAddress},#{a_status},#{a_hours},#{Approvedby},#{ApprovedbyId},#{name});
+    </insert>
+
+    <!--根据审批人和审批状态查询-->
+    <select id="findApplyByApprovedById" resultType="com.smu.recognize.model.Apply">
+        select * from apply_table
+        where ApprovedbyId=#{ApprovedbyId} and a_status=#{a_status}
+    </select>
+    
+    <!--审批，更新申请状态-->
+    <update id="updateStatus" parameterType="com.smu.recognize.model.Apply">
+        update apply_table
+        set a_status=#{a_status}
+        where app_id=#{app_id}
+    </update>
+
+</mapper>

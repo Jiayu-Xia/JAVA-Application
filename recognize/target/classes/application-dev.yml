@@ -1,0 +1,23 @@
+server:
+  port: 8085
+  max-http-header-size: 10000000
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/attendance?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.smu.recognize.model
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#showSql
+logging:
+  level:
+    com:
+      example:
+        mapper : info

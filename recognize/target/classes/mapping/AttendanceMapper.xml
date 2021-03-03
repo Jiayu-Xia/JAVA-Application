@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smu.recognize.dao.AttendanceMapper">
+<!--mybatis的mapper文件中，数据类型必须大写-->
+    <resultMap id="BaseResultMap" type="com.smu.recognize.model.Attendance">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="user_id" />
+        <result column="date" jdbcType="VARCHAR" property="date" />
+        <result column="start_time" jdbcType="VARCHAR" property="start_time"/>
+        <result column="end_time" jdbcType="VARCHAR" property="end_time"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+        <result column="flag" jdbcType="INTEGER" property="flag"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+
+    <!--查询全部考勤记录-->
+    <select id="selectAll" resultType="com.smu.recognize.model.Attendance">
+        select * from attendance_table
+    </select>
+
+    <!--根据日期查询记录-->
+    <select id="findAttendanceByDate" resultType="com.smu.recognize.model.Attendance">
+        select * from attendance_table
+        where date =#{date}
+    </select>
+
+    <!--根据状态查询记录-->
+    <select id="findAttendanceByStatus" resultType="com.smu.recognize.model.Attendance">
+        select * from attendance_table
+        where status =#{status}
+    </select>
+
+    <!--根据人员id查询考勤记录-->
+    <select id="findAttendanceByUser_id" resultType="com.smu.recognize.model.Attendance">
+        select * from attendance_table
+        where user_id=#{user_id}
+    </select>
+    <!--根据位置查询考勤记录-->
+    <select id="findAttendanceByAddress" resultType="com.smu.recognize.model.Attendance">
+        select * from attendance_table
+        where address={address}
+    </select>
+    <!--根据上下班标志查询考勤记录-->
+    <select id="findAttendanceByFlag" resultType="com.smu.recognize.model.Attendance">
+        select * from attendance_table
+        where flag={flag}
+    </select>
+
+    <!--插入上班考勤记录-->
+    <insert id="insertAttendance" parameterType="com.smu.recognize.model.Attendance">
+        insert into attendance_table(id,user_id,date,start_time,end_time,startaddress,longitude,latitude,flag,status)
+        values (#{id},#{user_id},#{date},#{start_time},#{end_time},#{startaddress},#{longitude},#{latitude},#{flag},#{status})
+    </insert>
+
+    <!--根据user_id和date查询早上的考勤-->
+    <select id="findByIdAndDate" resultType="com.smu.recognize.model.Attendance">
+        select * from attendance_table
+        where user_id=#{user_id} and date=#{date}
+    </select>
+
+    <!--下班考勤是修改-->
+    <update id="updateAttendance" parameterType="com.smu.recognize.model.Attendance">
+        update attendance_table
+        set end_time=#{end_time},endaddress=#{endaddress},flag+#{flag},status=#{status}
+        where user_id=#{user_id} and date=#{date}
+    </update>
+
+
+</mapper>
